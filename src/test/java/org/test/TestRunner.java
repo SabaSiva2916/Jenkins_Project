@@ -9,14 +9,14 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = { "src\\test\\resources\\Sample.feature" }, glue = { "org.stepdef" }, plugin = { "pretty",
-		"json:C:\\Users\\sabas\\eclipse-workspace\\SampleCucumberProject\\target\\s.json" },monochrome=true)
+		"json:target/s.json" },monochrome=true)
 
 public class TestRunner {
 
 	@AfterClass
 	public static void aftClas() {
 		ReportingClassesss
-				.getReports("C:\\Users\\sabas\\eclipse-workspace\\SampleCucumberProject\\target\\s.json");
+				.getReports("json:target/s.json");
 	}
 
 }
