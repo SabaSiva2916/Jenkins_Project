@@ -1,15 +1,85 @@
 pipeline {
 
-    agent any
 
-    stages {
+agent any
 
-        stage('Build') {
+tools {
 
-            steps {
+    maven 'Maven'
+}
 
-                bat 'mvn clean test'
-            }
+parameters {
+
+    string(
+        name: 'BROWSER',
+        defaultValue: 'chrome',
+        description: 'Enter browser name'
+    )
+}
+
+stages {
+
+    stage('Git Checkout') {
+
+        steps {
+
+            echo "Fetching latest code from GitHub"
+
+            git branch: 'master',
+            url: 'https://github.com/SabaSiva2916/Jenkins_Project.git'
         }
     }
+
+    stage('Clean Project') {
+
+        steps {
+
+            echo "Cleaning project"
+
+            bat 'mvn clean'
+        }
+    }
+
+    stage('Build Project') {
+
+        steps {
+
+            echo "Building project"
+
+            bat 'mvn compile'
+        }
+    }
+
+    stage('Execute Tests') {
+
+        steps {
+
+            echo "Executing automation tests"
+
+            bat "mvn test -Dbrowser=${params.BROWSER}"
+        }
+    }
+}
+
+post {
+
+    always {
+
+        cucumber buildStatus: 'UNSTABLE',
+        fileIncludePattern: '**/target/s.json',
+        sortingMethod: 'ALPHABETICAL'
+    }
+
+    success {
+
+        echo 'Execution completed successfully'
+    }
+
+    failure {
+
+        echo 'Execution failed'
+    }
+}
+
+
 }
