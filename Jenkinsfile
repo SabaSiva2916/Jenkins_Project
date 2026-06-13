@@ -10,11 +10,12 @@ tools {
 
 parameters {
 
-    string(
+     choice(
         name: 'BROWSER',
-        defaultValue: 'chrome',
-        description: 'Enter browser name'
+        choices: ['chrome', 'edge', 'firefox'],
+        description: 'Select Browser'
     )
+
 }
 
 stages {
